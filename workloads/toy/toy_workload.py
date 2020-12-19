@@ -12,8 +12,8 @@ gpu_pool = ResourcePool("STD_GPU_POOL", ResourceType.GPU, [("STD_GPU_1", Resourc
 
 # Add DAGs here
 events = EventQueue([
-	(linear_dag, [(0, None), (0, None), (0, None), (0, None), (1, None), (1, None)]),
-	(branch_dag, [(0, None), (0, None), (0, None), (0, None), (1, None), (1, None)])
+	(linear_dag, [(0, None), (0, None), (0, None), (0, None), (1, None), (1, None)])
+	# (branch_dag, [(0, None), (0, None), (0, None), (0, None), (1, None), (1, None)])
 ])
 
 system = SimpleSystem(events,
