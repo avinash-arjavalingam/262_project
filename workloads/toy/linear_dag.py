@@ -140,19 +140,22 @@ linear_dag.add_edge(linear_first, linear_second)
 linear_dag.add_edge(linear_second, linear_third)
 linear_dag.sanity_check()
 
-linear_dag_clockwork_data = {}
-dag_cpu_time = 0
-dag_cpu_cost = 0
-dag_gpu_time = 0
-dag_gpu_cost = 0
-for func in list(linear_dag.functions.values()):
-	dag_cpu = func.resources['STD_CPU']
-	dag_gpu = func.resources['STD_GPU']
-	dag_cpu_time += dag_cpu['pre'].get_runtime() + dag_cpu['exec'].get_runtime() + dag_cpu['post'].get_runtime()
-	dag_gpu_time += dag_gpu['pre'].get_runtime() + dag_gpu['exec'].get_runtime() + dag_gpu['post'].get_runtime()
-	dag_cpu_cost += dag_cpu['cost']
-	dag_gpu_cost += dag_gpu['cost']
-linear_dag_clockwork_data[linear_dag.name] = [[dag_cpu_time, dag_cpu_cost], [dag_gpu_time, dag_gpu_cost]]
+
+def gen_clockwork(dag_functions):
+	dag_cpu_time = 0
+	dag_cpu_cost = 0
+	dag_gpu_time = 0
+	dag_gpu_cost = 0
+	for func in list(dag_functions):
+		dag_cpu = func.resources['STD_CPU']
+		dag_gpu = func.resources['STD_GPU']
+		dag_cpu_time += dag_cpu['pre'].get_runtime() + dag_cpu['exec'].get_runtime() + dag_cpu['post'].get_runtime()
+		dag_gpu_time += dag_gpu['pre'].get_runtime() + dag_gpu['exec'].get_runtime() + dag_gpu['post'].get_runtime()
+		dag_cpu_cost += dag_cpu['cost']
+		dag_gpu_cost += dag_gpu['cost']
+	return [[dag_cpu_time, dag_cpu_cost], [dag_gpu_time, dag_gpu_cost]]
+
+linear_dag_clockwork_data = gen_clockwork(linear_dag.functions.values())
 
 
 class DAGInstance:

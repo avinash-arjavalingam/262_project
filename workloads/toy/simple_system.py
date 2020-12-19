@@ -30,8 +30,15 @@ class SimpleSystem(System):
 			# 	print(price_instance.running_cost)
 			# for time_instance in linear_instance_placements.time_list:
 			# 	print(time_instance.running_time)
-			sample_placement = (linear_instance_placements.get_sample_list(10000, 10000))[0]
-			self.dag_maps = sample_placement.id_res_map
+			# sample_placement = (linear_instance_placements.get_sample_list(10000, 10000))[0]
+			# self.dag_maps = sample_placement.id_res_map
+			print(linear_dag_clockwork_data)
+			if linear_dag_clockwork_data[1][0] < 20 and linear_dag_clockwork_data[1][1] < 85:
+				self.dag_maps[dag.name] = 'STD_GPU'
+			elif linear_dag_clockwork_data[0][0] < 20 and linear_dag_clockwork_data[0][1] < 85:
+				self.dag_maps[dag.name] = 'STD_CPU'
+			else:
+				continue
 			# print(dag_maps)
 			# for sample_instance in linear_instance_placements.get_sample_list(10000, 10000):
 			# 	print(sample_instance.running_time)
@@ -56,7 +63,7 @@ class SimpleSystem(System):
 					# 	pool = self.pools['STD_GPU_POOL']
 					# print(self.dag_maps)
 					# print(nxt.unique_id)
-					if self.dag_maps[nxt.unique_id] == 'STD_GPU':
+					if self.dag_maps[dag.name] == 'STD_GPU':
 						pool = self.pools['STD_GPU_POOL']
 						# print("GPU")
 					else:
